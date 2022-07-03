@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  h1 {
+    @apply text-3xl font-bold md:text-4xl;
+  }
+
+  h2 {
+    @apply text-2xl font-bold md:text-3xl;
+  }
+
+  h3 {
+    @apply text-xl font-bold md:text-2xl;
+  }
+
+  h4 {
+    @apply text-lg font-bold md:text-xl;
+  }
+
+  body {
+    @apply font-primary antialiased;
+  }
+
+  :is(a, button) {
+    @apply outline-none;
+  }
+
+  .layout {
+    @apply mx-auto max-w-xl px-5 md:px-0;
+  }
+}
