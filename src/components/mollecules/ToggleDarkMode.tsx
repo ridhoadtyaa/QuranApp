@@ -6,14 +6,16 @@ import { twclsx } from '@/libs'
 import { HiMoon, HiSun } from 'react-icons/hi'
 
 const ToggleDarkMode: React.FunctionComponent = () => {
-  const { theme, toggleTheme } = useTheme()
+  const { theme, mounted, changeTheme } = useTheme()
 
   const BUTTON_TTLE = `Ubah tema mode ${theme === 'light' ? 'gelap' : 'terang'}`
+
+  if (!mounted) return null
 
   return (
     <Button
       title={BUTTON_TTLE}
-      onClick={toggleTheme}
+      onClick={changeTheme}
       className={twclsx(
         'p-2',
         'bg-primary-200 dark:bg-primary-900',

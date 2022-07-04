@@ -1,21 +1,32 @@
-import * as atoms from '@/stores'
-
-import { useAtom } from 'jotai'
-import { useEffect } from 'react'
+import { useTheme as useNextTheme } from 'next-themes'
+import { useEffect, useState } from 'react'
 
 const useTheme = () => {
-  const [theme, setTheme] = useAtom(atoms.theme)
+  const { theme, setTheme, systemTheme } = useNextTheme(),
+    [mounted, setMounted] = useState<boolean>(false),
+    currentTheme = theme === 'system' ? systemTheme : theme
 
-  const toggleTheme = () => setTheme((prevState) => (prevState === 'dark' ? 'light' : 'dark'))
+  const changeTheme = () => {
+    if (currentTheme === 'dark') {
+      setTheme('light')
+      return
+    }
+    setTheme('dark')
+  }
 
   useEffect(() => {
-    document.documentElement.className = theme
-    document.documentElement.style.colorScheme = theme
-  }, [theme])
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (currentTheme) setTheme(currentTheme)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentTheme])
 
   return {
-    theme,
-    toggleTheme
+    mounted,
+    changeTheme,
+    theme
   }
 }
 
