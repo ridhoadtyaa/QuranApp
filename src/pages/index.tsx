@@ -1,10 +1,12 @@
+import SearchBar from '@/components/mollecules/SearchBar'
+import Surah from '@/components/mollecules/Surah'
 import Layout, { LayoutProps } from '@/components/templates/Layout'
 
-import { twclsx } from '@/libs'
-import { getMetaData } from '@/libs/metaData'
+import { getMetaData, twclsx } from '@/libs'
+import * as atom from '@/stores'
 
+import { useAtom } from 'jotai'
 import type { GetStaticProps, NextPage } from 'next'
-import Link from 'next/link'
 import { Surat } from 'quran-app'
 
 interface HomePageProps {
@@ -12,6 +14,8 @@ interface HomePageProps {
 }
 
 const Home: NextPage<HomePageProps> = ({ surat }) => {
+  const [search] = useAtom(atom.search)
+
   const meta = getMetaData({
     title: 'Quran App',
     template: 'Home',
@@ -28,37 +32,18 @@ const Home: NextPage<HomePageProps> = ({ surat }) => {
       <Layout {...(meta as LayoutProps)}>
         <h3 className={twclsx('text-primary-900')}>Daftar Surah</h3>
 
-        <div className={twclsx('divide-y-2', 'my-6')}>
-          {surat.map((s) => (
-            <Link href={`/surat/${s.nomor}`} key={s.nomor}>
-              <div
-                className={twclsx('flex justify-between items-center', 'py-4', 'cursor-pointer')}
-                key={s.nomor}
-              >
-                <div className={twclsx('flex items-center', 'space-x-5')}>
-                  <div className={twclsx('star8')}>
-                    <div className={twclsx('-rotate-45', 'z-10', 'font-medium', 'text-sm')}>
-                      {s.nomor}
-                    </div>
-                  </div>
-                  <div className={twclsx('space-y-2')}>
-                    <div className={twclsx('font-semibold', 'text-lg')}>{s.nama_latin}</div>
-                    <p
-                      className={twclsx(
-                        'text-slate-400 text-xs dark:text-slate-500',
-                        'font-semibold',
-                        'uppercase'
-                      )}
-                    >
-                      {s.tempat_turun} &bull; {s.jumlah_ayat} AYAT
-                    </p>
-                  </div>
-                </div>
-                <div className={twclsx('font-bold', 'text-primary-600 text-xl')}>{s.nama}</div>
-              </div>
-            </Link>
-          ))}
-        </div>
+        <SearchBar />
+
+        <section className={twclsx('divide-y-[1px] divide-slate-300', 'mb-6')}>
+          {surat.filter((s) => s.nama_latin.toLocaleLowerCase().includes(search.toLowerCase()))
+            .length ? (
+            surat
+              .filter((s) => s.nama_latin.toLocaleLowerCase().includes(search.toLowerCase()))
+              .map((s) => <Surah key={s.nomor} {...s} />)
+          ) : (
+            <p className={twclsx('text-center', 'pt-3')}>Surah yang anda cari tidak ditemukan.</p>
+          )}
+        </section>
       </Layout>
     </>
   )
