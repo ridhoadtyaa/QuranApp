@@ -1,5 +1,3 @@
-import { atomWithStorage } from 'jotai/utils'
+import { atom } from 'jotai'
 
-type Theme = 'light' | 'dark'
-
-export const theme = atomWithStorage<Theme>('theme', 'light')
+export const search = atom<string>('')
