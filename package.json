@@ -1,17 +1,16 @@
 {
-  "name": "nekkeun",
-  "version": "0.1.0",
+  "name": "quranapp",
   "private": true,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rizkimcitra/nekkeun.git"
+    "url": "git+https://github.com/ridhoadtyaa/QuranApp.git"
   },
-  "author": "Rizki Maulana Citra",
+  "author": "Ridho Aditya Nurtama",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/rizkimcitra/nekkeun/issues"
+    "url": "https://github.com/ridhoadtyaa/QuranApp/issues"
   },
-  "homepage": "https://github.com/rizkimcitra/nekkeun#readme",
+  "homepage": "https://quran-app-ran.vercel.app/",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -29,7 +28,8 @@
     "next-themes": "^0.2.0",
     "react": "18.1.0",
     "react-dom": "18.1.0",
-    "react-icons": "^4.4.0"
+    "react-icons": "^4.4.0",
+    "react-query": "^3.39.1"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^3.2.0",
