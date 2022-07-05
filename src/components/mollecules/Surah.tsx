@@ -11,7 +11,7 @@ const Surah: React.FunctionComponent<Surat> = ({
   nama
 }) => {
   return (
-    <Link href={`/surat/${nomor}`} key={nomor}>
+    <Link href={`/surah/${nomor}`} key={nomor}>
       <div
         className={twclsx('flex justify-between items-center', 'py-4', 'cursor-pointer')}
         key={nomor}
