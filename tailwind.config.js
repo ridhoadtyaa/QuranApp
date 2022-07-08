@@ -13,6 +13,9 @@ module.exports = {
       },
       colors: {
         primary: colors.purple
+      },
+      backgroundColor: {
+        dark: '#001140'
       }
     }
   },
