@@ -34,7 +34,9 @@ const Home: NextPage<HomePageProps> = ({ surat }) => {
 
         <SearchBar />
 
-        <section className={twclsx('divide-y-[1px] divide-slate-300', 'mb-6')}>
+        <section
+          className={twclsx('divide-y-[1px] divide-slate-200/80 dark:divide-slate-700/80', 'mb-6')}
+        >
           {surat.filter((s) => s.nama_latin.toLocaleLowerCase().includes(search.toLowerCase()))
             .length ? (
             surat
