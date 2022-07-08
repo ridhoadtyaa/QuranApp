@@ -1,3 +1,4 @@
+import UnstyledLink from '@/components/atoms/UnstyledLink'
 import ToggleDarkMode from '@/components/mollecules/ToggleDarkMode'
 
 import useWindowScroll from '@/hooks/useWindowScroll'
@@ -18,7 +19,9 @@ const Header: React.FunctionComponent = () => {
     >
       <nav>
         <div className={twclsx('layout', 'py-5', 'flex justify-between items-center')}>
-          <h2 className={twclsx('text-primary-700 dark:text-white')}>Quran App</h2>
+          <UnstyledLink href='/'>
+            <h2 className={twclsx('text-primary-700 dark:text-white')}>Quran App</h2>
+          </UnstyledLink>
           <div>
             <ToggleDarkMode />
           </div>
