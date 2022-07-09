@@ -1,3 +1,4 @@
+import BackToTop from '@/components/atoms/BackToTop'
 import Seo, { CustomSeoProps } from '@/components/atoms/Seo'
 import Footer from '@/components/organism/Footer'
 import Header from '@/components/organism/Header'
@@ -16,7 +17,10 @@ const Layout: NextPage<LayoutProps> = ({ children, ...props }) => {
     <>
       <Seo {...props} />
       <Header />
-      <main className={twclsx('mt-28 scroll-mt-28', 'layout')}>{children}</main>
+      <main className={twclsx('mt-28 scroll-mt-28', 'layout', 'relative')}>
+        {children}
+        <BackToTop />
+      </main>
       <Footer />
     </>
   )
