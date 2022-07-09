@@ -29,17 +29,17 @@ const Ayat: React.FunctionComponent<AyatProps> = ({ayat}) => {
         </div>
         <div className={twclsx('flex items-center', 'space-x-4')}>
           <Button>
-            <Share size={22} className={twclsx('fill-primary-700 dark:fill-primary-500')} title='Bagikan' />
+            <Share size={22} className={twclsx('fill-primary-700 dark:fill-primary-400')} title='Bagikan' />
             <span className={twclsx('sr-only')}>Tombol Bagikan</span>
           </Button>
           <Button>
-            <Read size={24} className={twclsx('fill-primary-700 dark:fill-primary-500')} title='Lihat Tafsir' />
+            <Read size={24} className={twclsx('fill-primary-700 dark:fill-primary-400')} title='Lihat Tafsir' />
             <span className={twclsx('sr-only')}>Tombol Lihat Tafsir</span>
           </Button>
         </div>
       </div>
       <div className={twclsx('space-y-4', 'mt-6', 'px-4')}>
-        <div className={twclsx('text-right text-lg', 'font-medium')}>{ayat.ar}</div>
+        <div className={twclsx('text-right text-xl', 'font-medium')}>{ayat.ar}</div>
         <p>{ayat.idn}</p>
       </div>
     </div>
