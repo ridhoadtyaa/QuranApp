@@ -74,7 +74,7 @@ const SurahPage: NextPage = () => {
                 title='Surat Sebelumnya'
                 href={`/surah/${data.surat_sebelumnya.nomor}`}
                 className={twclsx(
-                  'bg-primary-600 hover:ring hover:ring-primary-300 transition',
+                  'bg-primary-600 hover:ring hover:ring-primary-300 transition dark:bg-primary-800 dark:hover:ring-primary-700',
                   'text-white text-sm',
                   'py-2 px-3',
                   'rounded-md',
@@ -91,7 +91,7 @@ const SurahPage: NextPage = () => {
                 title='Surat Selanjutnya'
                 href={`/surah/${data.surat_selanjutnya.nomor}`}
                 className={twclsx(
-                  'bg-primary-600 hover:ring hover:ring-primary-300 transition',
+                  'bg-primary-600 hover:ring hover:ring-primary-300 transition dark:bg-primary-800 dark:hover:ring-primary-700',
                   'text-white text-sm',
                   'py-2 px-3',
                   'rounded-md',
