@@ -43,7 +43,7 @@ const SurahInfo: React.FunctionComponent<SurahInfoProps> = ({
           {tempat_turun} &bull; {jumlah_ayat} AYAT
         </span>
 
-        <h2>ِبِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيْم</h2>
+        <h2 className={twclsx('font-arabic')}>ِبِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيْم</h2>
 
         <Button
           className={twclsx('absolute top-3 right-3')}

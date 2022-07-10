@@ -38,9 +38,10 @@ const Ayat: React.FunctionComponent<AyatProps> = ({ayat}) => {
           </Button>
         </div>
       </div>
-      <div className={twclsx('space-y-4', 'mt-6', 'px-4')}>
-        <div className={twclsx('text-right text-xl', 'font-medium')}>{ayat.ar}</div>
-        <p>{ayat.idn}</p>
+      <div className={twclsx('mt-6', 'px-4')}>
+        <div className={twclsx('text-right text-3xl leading-[2.4]', 'font-arabic', 'mt-6')}>{ayat.ar}</div>
+        <div className={twclsx('mt-8 mb-4')} dangerouslySetInnerHTML={{ __html: `<p>${ayat.tr}</p>` }} />
+        <p className={twclsx('text-sm', 'text-slate-600 dark:text-slate-400')}>{ayat.idn}</p>
       </div>
     </div>
   )

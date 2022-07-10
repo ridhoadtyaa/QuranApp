@@ -9,7 +9,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        primary: ['"Poppins"', ...fontFamily.sans]
+        primary: ['"Poppins"', ...fontFamily.sans],
+        arabic: ['"LPMQ"', 'Traditional Arabic', 'Tahoma', 'sans-serif']
       },
       colors: {
         primary: colors.purple
