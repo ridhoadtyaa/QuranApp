@@ -39,6 +39,13 @@ declare module 'quran-app' {
     idn: string
   }
 
+  export interface Tafsir {
+    id: number
+    surah: number
+    ayat: number
+    tafsir: string
+  }
+
   export interface SuratNextBefore {
     id: number
     nomor: number
