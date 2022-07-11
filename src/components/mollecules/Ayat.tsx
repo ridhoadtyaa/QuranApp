@@ -36,7 +36,7 @@ const Ayat: React.FunctionComponent<AyatProps> = ({ayat, surah, tafsir}) => {
 
   return (
     <>
-      <div id={ayat.id.toString()} className={twclsx('py-8')}>
+      <div id={ayat.nomor.toString()} className={twclsx('py-8')}>
         <div
           className={twclsx(
             'flex justify-between items-center',
