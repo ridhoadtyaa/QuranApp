@@ -1,3 +1,10 @@
 # <p align="center">Quran App</p>
 
-Under Development
+Dibuat dengan :
+
+- Next.js
+- Tailwind CSS
+- Typescript
+- Headless UI
+
+[Quran API](https://equran.id/apidev)
