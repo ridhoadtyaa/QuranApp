@@ -40,6 +40,19 @@ declare module 'quran-app' {
   }
 
   export interface Tafsir {
+    status: boolean
+    nomor: number
+    nama: string
+    nama_latin: string
+    jumlah_ayat: number
+    tempat_turun: TempatTurun
+    arti: string
+    deskripsi: string
+    audio: string
+    tafsir: TafsirList[]
+  }
+
+  export interface TafsirList {
     id: number
     surah: number
     ayat: number
