@@ -22,7 +22,7 @@ const Ayat: React.FunctionComponent<AyatProps> = ({ayat, surah, tafsir}) => {
           .share({
             title: surah,
             text: `Baca Surah ${surah} ayat ${ayat.nomor} di Quran App`,
-            url: `https://quran-app-ran.vercel.app/surah/${ayat.surah}#${ayat.id}`
+            url: `https://quran-app-ran.vercel.app/surah/${ayat.surah}#${ayat.nomor}`
           })
       } catch (error) {
         console.log(`Oops! I couldn't share to the world because: ${error}`)
