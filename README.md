@@ -6,6 +6,5 @@ Dibuat dengan :
 - Tailwind CSS
 - Typescript
 - Headless UI
-- React Query
 
 [Quran API](https://equran.id/apidev)
