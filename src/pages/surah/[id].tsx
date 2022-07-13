@@ -8,14 +8,14 @@ import { getMetaData, twclsx } from '@/libs'
 import axios from 'axios'
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import { ParsedUrlQuery } from 'querystring'
-import { Ayat as AyatType, Surat, SuratDetail, Tafsir } from 'quran-app'
+import { Ayat as AyatType, Surat, SuratDetail, Tafsir, TafsirList } from 'quran-app'
 import { memo } from 'react'
 import { BsArrowLeft as ArrowLeft, BsArrowRight as ArrowRight } from 'react-icons/bs'
 import { IoIosArrowRoundBack as Back } from 'react-icons/io'
 
 interface SurahPageProps {
   surah: SuratDetail
-  tafsir: Tafsir[]
+  tafsir: TafsirList[]
 }
 
 interface IParams extends ParsedUrlQuery {

@@ -2,14 +2,14 @@ import { twclsx } from "@/libs"
 import Button from "../atoms/Button"
 
 import { AiOutlineRead as Read, AiOutlineShareAlt as Share } from 'react-icons/ai'
-import { Ayat, Tafsir } from "quran-app"
+import { Ayat, TafsirList } from "quran-app"
 import { useState } from "react"
 import Modal from "./Modal"
 
 interface AyatProps {
   ayat: Ayat,
   surah: string,
-  tafsir: Tafsir | undefined
+  tafsir: TafsirList
 }
 
 const Ayat: React.FunctionComponent<AyatProps> = ({ayat, surah, tafsir}) => {
@@ -72,8 +72,8 @@ const Ayat: React.FunctionComponent<AyatProps> = ({ayat, surah, tafsir}) => {
       </div>
 
       {/* Modal */}
-      <Modal isOpen={modalTafsir} closeModal={() => setModalTafsir(false)} title={`Tafsir Ayat ${tafsir?.ayat} Surah ${surah}`}>
-        <p className={twclsx('whitespace-pre-wrap', 'mt-6', 'text-sm xl:text-base')}>{tafsir?.tafsir}</p>
+      <Modal isOpen={modalTafsir} closeModal={() => setModalTafsir(false)} title={`Tafsir Ayat ${tafsir.ayat} Surah ${surah}`}>
+        <p className={twclsx('whitespace-pre-wrap', 'mt-6', 'text-sm xl:text-base')}>{tafsir.tafsir}</p>
       </Modal>
     </>
   )
