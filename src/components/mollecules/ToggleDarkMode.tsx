@@ -3,6 +3,7 @@ import Button from '@/components/atoms/Button'
 import useTheme from '@/hooks/useTheme'
 import { twclsx } from '@/libs'
 
+import { memo } from 'react'
 import { HiMoon, HiSun } from 'react-icons/hi'
 
 const ToggleDarkMode: React.FunctionComponent = () => {
@@ -34,4 +35,4 @@ const ToggleDarkMode: React.FunctionComponent = () => {
   )
 }
 
-export default ToggleDarkMode
+export default memo(ToggleDarkMode)

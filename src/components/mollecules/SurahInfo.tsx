@@ -4,7 +4,7 @@ import { twclsx } from '@/libs'
 
 import Modal from './Modal'
 
-import { useState } from 'react'
+import { memo, useState } from 'react'
 import { AiOutlineInfoCircle as Info } from 'react-icons/ai'
 
 interface SurahInfoProps {
@@ -23,6 +23,7 @@ const SurahInfo: React.FunctionComponent<SurahInfoProps> = ({
   deskripsi
 }) => {
   const [modalDeskripsi, setModalDeskripsi] = useState(false)
+
   return (
     <>
       <section
@@ -66,4 +67,4 @@ const SurahInfo: React.FunctionComponent<SurahInfoProps> = ({
   )
 }
 
-export default SurahInfo
+export default memo(SurahInfo)

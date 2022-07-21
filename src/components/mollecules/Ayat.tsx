@@ -3,7 +3,7 @@ import Button from "../atoms/Button"
 
 import { AiOutlineRead as Read, AiOutlineShareAlt as Share } from 'react-icons/ai'
 import { Ayat, TafsirList } from "quran-app"
-import { useState } from "react"
+import { memo, useState } from "react"
 import Modal from "./Modal"
 
 interface AyatProps {
@@ -79,4 +79,4 @@ const Ayat: React.FunctionComponent<AyatProps> = ({ayat, surah, tafsir}) => {
   )
 }
 
-export default Ayat
+export default memo(Ayat)
