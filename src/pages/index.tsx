@@ -1,6 +1,6 @@
 import SearchBar from '@/components/mollecules/SearchBar'
 import Surah from '@/components/mollecules/Surah'
-import Layout, { LayoutProps } from '@/components/templates/Layout'
+import Layout from '@/components/templates/Layout'
 
 import { getMetaData, twclsx } from '@/libs'
 import * as atom from '@/stores'
@@ -28,26 +28,24 @@ const Home: NextPage<HomePageProps> = ({ surat }) => {
   })
 
   return (
-    <>
-      <Layout {...(meta as LayoutProps)}>
-        <h3 className={twclsx('text-primary-900')}>Daftar Surah</h3>
+    <Layout {...meta}>
+      <h3 className={twclsx('text-primary-900')}>Daftar Surah</h3>
 
-        <SearchBar />
+      <SearchBar />
 
-        <section
-          className={twclsx('divide-y-[1px] divide-slate-200/80 dark:divide-slate-700/80', 'mb-6')}
-        >
-          {surat.filter((s) => s.nama_latin.toLocaleLowerCase().includes(search.toLowerCase()))
-            .length ? (
-            surat
-              .filter((s) => s.nama_latin.toLocaleLowerCase().includes(search.toLowerCase()))
-              .map((s) => <Surah key={s.nomor} {...s} />)
-          ) : (
-            <p className={twclsx('text-center', 'pt-3')}>Surah yang anda cari tidak ditemukan.</p>
-          )}
-        </section>
-      </Layout>
-    </>
+      <section
+        className={twclsx('divide-y-[1px] divide-slate-200/80 dark:divide-slate-700/80', 'mb-6')}
+      >
+        {surat.filter((s) => s.nama_latin.toLocaleLowerCase().includes(search.toLowerCase()))
+          .length ? (
+          surat
+            .filter((s) => s.nama_latin.toLocaleLowerCase().includes(search.toLowerCase()))
+            .map((s) => <Surah key={s.nomor} {...s} />)
+        ) : (
+          <p className={twclsx('text-center', 'pt-3')}>Surah yang anda cari tidak ditemukan.</p>
+        )}
+      </section>
+    </Layout>
   )
 }
 

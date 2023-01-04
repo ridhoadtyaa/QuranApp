@@ -49,3 +49,12 @@
     font-display: swap;
   }
 }
+
+#nprogress .bar {
+  background: #a855f7 !important;
+  height: 4px;
+}
+
+#nprogress .peg {
+  box-shadow: 0 0 10px #ffbb00, 0 0 5px #ffbb00;
+}

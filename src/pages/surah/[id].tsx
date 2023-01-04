@@ -1,6 +1,6 @@
 import UnstyledLink from '@/components/atoms/UnstyledLink'
 import SurahDetail from '@/components/organism/SurahDetail'
-import Layout, { LayoutProps } from '@/components/templates/Layout'
+import Layout from '@/components/templates/Layout'
 
 import { getMetaData, twclsx } from '@/libs'
 
@@ -41,7 +41,7 @@ const SurahPage: NextPage<SurahPageProps> = ({ surah, tafsir }) => {
   })
 
   return (
-    <Layout {...(meta as LayoutProps)}>
+    <Layout {...meta}>
       <UnstyledLink
         className={twclsx(
           'text-primary-800 dark:text-primary-400 font-medium',
