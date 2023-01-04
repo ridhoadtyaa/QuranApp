@@ -20,10 +20,15 @@ const UnstyledLink: React.FunctionComponent<UnstyledLinkProps> = ({ href, childr
   }
 
   return (
-    <NextLink href={href} scroll={false} {...props}>
-      <a title={props.title ?? ''} onClick={props.onClick} className={twclsx(props.className)}>
-        {children}
-      </a>
+    <NextLink
+      href={href}
+      scroll={false}
+      {...props}
+      title={props.title ?? ''}
+      onClick={props.onClick}
+      className={twclsx(props.className)}
+    >
+      {children}
     </NextLink>
   )
 }
