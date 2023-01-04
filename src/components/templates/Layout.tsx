@@ -7,18 +7,18 @@ import { twclsx } from '@/libs/twclsx'
 
 import { NextPage } from 'next'
 
-export interface LayoutProps extends CustomSeoProps {
-  children: React.ReactNode
+export type LayoutPageProps = {
+  children?: React.ReactNode
   className?: string
 }
 
-const Layout: NextPage<LayoutProps> = ({ children, ...props }) => {
+const Layout: NextPage<LayoutPageProps> = ({ className, ...props }) => {
   return (
     <>
-      <Seo {...props} />
+      <Seo {...(props as CustomSeoProps)} />
       <Header />
-      <main className={twclsx('mt-28 scroll-mt-28', 'layout', 'relative')}>
-        {children}
+      <main className={twclsx('mt-28 scroll-mt-28', 'layout', 'relative', className)}>
+        {props.children}
         <BackToTop />
       </main>
       <Footer />

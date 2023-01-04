@@ -1,8 +1,8 @@
 import { NextSeo, NextSeoProps } from 'next-seo'
 
-export interface CustomSeoProps extends NextSeoProps {
+export type CustomSeoProps = {
   template?: string
-}
+} & NextSeoProps
 
 const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME
 
