@@ -1,13 +1,13 @@
 import { twclsx } from '@/libs'
 
 import Link from 'next/link'
-import { Surat } from 'quran-app'
+import { SuratData } from 'quran-app'
 
-const Surah: React.FunctionComponent<Surat> = ({
+const Surah: React.FunctionComponent<SuratData> = ({
   nomor,
-  nama_latin,
-  tempat_turun,
-  jumlah_ayat,
+  namaLatin,
+  tempatTurun,
+  jumlahAyat,
   nama
 }) => {
   return (
@@ -21,7 +21,7 @@ const Surah: React.FunctionComponent<Surat> = ({
             <div className={twclsx('-rotate-45', 'z-10', 'font-medium', 'text-sm')}>{nomor}</div>
           </div>
           <div className={twclsx('space-y-2')}>
-            <div className={twclsx('font-semibold', 'text-lg')}>{nama_latin}</div>
+            <div className={twclsx('font-semibold', 'text-lg')}>{namaLatin}</div>
             <p
               className={twclsx(
                 'text-slate-400 text-xs dark:text-slate-500',
@@ -29,7 +29,7 @@ const Surah: React.FunctionComponent<Surat> = ({
                 'uppercase'
               )}
             >
-              {tempat_turun} &bull; {jumlah_ayat} AYAT
+              {tempatTurun} &bull; {jumlahAyat} AYAT
             </p>
           </div>
         </div>

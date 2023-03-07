@@ -2,17 +2,21 @@ import { twclsx } from "@/libs"
 import Button from "../atoms/Button"
 
 import { AiOutlineRead as Read, AiOutlineShareAlt as Share } from 'react-icons/ai'
-import { Ayat, TafsirList } from "quran-app"
+import { Ayat } from "quran-app"
 import { memo, useState } from "react"
 import Modal from "./Modal"
 
 interface AyatProps {
   ayat: Ayat,
   surah: string,
-  tafsir: TafsirList
+  tafsir: {
+    ayat: number,
+    teks: string,
+  }
+  nomor: number
 }
 
-const Ayat: React.FunctionComponent<AyatProps> = ({ayat, surah, tafsir}) => {
+const Ayat: React.FunctionComponent<AyatProps> = ({ayat, surah, tafsir, nomor}) => {
   const [modalTafsir, setModalTafsir] = useState(false)
 
   const handleSharing = async () => {
@@ -21,8 +25,8 @@ const Ayat: React.FunctionComponent<AyatProps> = ({ayat, surah, tafsir}) => {
         await navigator
           .share({
             title: surah,
-            text: `Baca Surah ${surah} ayat ${ayat.nomor} di Quran App`,
-            url: `https://quran-app-ran.vercel.app/surah/${ayat.surah}#${ayat.nomor}`
+            text: `Baca Surah ${surah} ayat ${ayat.nomorAyat} di Quran App`,
+            url: `https://quran-app-ran.vercel.app/surah/${nomor}#${ayat.nomorAyat}`
           })
       } catch (error) {
         console.log(`Oops! I couldn't share to the world because: ${error}`)
@@ -36,7 +40,7 @@ const Ayat: React.FunctionComponent<AyatProps> = ({ayat, surah, tafsir}) => {
 
   return (
     <>
-      <div id={ayat.nomor.toString()} className={twclsx('py-8')}>
+      <div id={ayat.nomorAyat.toString()} className={twclsx('py-8')}>
         <div
           className={twclsx(
             'flex justify-between items-center',
@@ -51,7 +55,7 @@ const Ayat: React.FunctionComponent<AyatProps> = ({ayat, surah, tafsir}) => {
               'w-7 h-7',
             )}
           >
-            {ayat.nomor}
+            {ayat.nomorAyat}
           </div>
           <div className={twclsx('flex items-center', 'space-x-4')}>
             <Button onClick={handleSharing}>
@@ -65,15 +69,15 @@ const Ayat: React.FunctionComponent<AyatProps> = ({ayat, surah, tafsir}) => {
           </div>
         </div>
         <div className={twclsx('mt-6', 'px-4')}>
-          <div className={twclsx('text-right text-3xl leading-[2.4]', 'font-arabic', 'mt-6')}>{ayat.ar}</div>
-          <div className={twclsx('mt-8 mb-4')} dangerouslySetInnerHTML={{ __html: `<p>${ayat.tr}</p>` }} />
-          <p className={twclsx('text-sm', 'text-slate-600 dark:text-slate-400')}>{ayat.idn}</p>
+          <div className={twclsx('text-right text-3xl leading-[2.4]', 'font-arabic', 'mt-6')}>{ayat.teksArab}</div>
+          <div className={twclsx('mt-8 mb-4')} dangerouslySetInnerHTML={{ __html: `<p>${ayat.teksLatin}</p>` }} />
+          <p className={twclsx('text-sm', 'text-slate-600 dark:text-slate-400')}>{ayat.teksIndonesia}</p>
         </div>
       </div>
 
       {/* Modal */}
       <Modal isOpen={modalTafsir} closeModal={() => setModalTafsir(false)} title={`Tafsir Ayat ${tafsir.ayat} Surah ${surah}`}>
-        <p className={twclsx('whitespace-pre-wrap', 'mt-6', 'text-sm xl:text-base')}>{tafsir.tafsir}</p>
+        <p className={twclsx('whitespace-pre-wrap', 'mt-6', 'text-sm xl:text-base')}>{tafsir.teks}</p>
       </Modal>
     </>
   )

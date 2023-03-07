@@ -7,10 +7,10 @@ import * as atom from '@/stores'
 
 import { useAtom } from 'jotai'
 import type { GetStaticProps, NextPage } from 'next'
-import { Surat } from 'quran-app'
+import { SuratData } from 'quran-app'
 
 interface HomePageProps {
-  surat: Array<Surat>
+  surat: SuratData[]
 }
 
 const Home: NextPage<HomePageProps> = ({ surat }) => {
@@ -36,10 +36,10 @@ const Home: NextPage<HomePageProps> = ({ surat }) => {
       <section
         className={twclsx('divide-y-[1px] divide-slate-200/80 dark:divide-slate-700/80', 'mb-6')}
       >
-        {surat.filter((s) => s.nama_latin.toLocaleLowerCase().includes(search.toLowerCase()))
+        {surat.filter((s) => s.namaLatin.toLocaleLowerCase().includes(search.toLowerCase()))
           .length ? (
           surat
-            .filter((s) => s.nama_latin.toLocaleLowerCase().includes(search.toLowerCase()))
+            .filter((s) => s.namaLatin.toLocaleLowerCase().includes(search.toLowerCase()))
             .map((s) => <Surah key={s.nomor} {...s} />)
         ) : (
           <p className={twclsx('text-center', 'pt-3')}>Surah yang anda cari tidak ditemukan.</p>
@@ -50,12 +50,12 @@ const Home: NextPage<HomePageProps> = ({ surat }) => {
 }
 
 export const getStaticProps: GetStaticProps<HomePageProps> = async () => {
-  const req = await fetch('https://equran.id/api/surat')
+  const req = await fetch('https://equran.id/api/v2/surat')
   const surat = await req.json()
 
   return {
     props: {
-      surat
+      surat: surat.data
     }
   }
 }
