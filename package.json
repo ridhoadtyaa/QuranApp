@@ -17,7 +17,8 @@
     "start": "next start",
     "lint": "next lint",
     "postinstall": "husky install",
-    "format": "prettier --config ./.prettierrc.js --write"
+    "format": "prettier --config ./.prettierrc.js --write",
+    "postbuild": "cross-env next-sitemap --config next-sitemap.js"
   },
   "dependencies": {
     "@headlessui/react": "^1.6.5",
@@ -44,12 +45,14 @@
     "autoprefixer": "^10.4.7",
     "clsx": "^1.1.1",
     "commitizen": "^4.2.4",
+    "cross-env": "^7.0.3",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "8.15.0",
     "eslint-config-next": "12.1.6",
     "eslint-config-prettier": "^8.5.0",
     "husky": "^8.0.1",
     "lint-staged": "^12.4.1",
+    "next-sitemap": "^3.1.52",
     "postcss": "^8.4.13",
     "prettier": "^2.6.2",
     "prettier-plugin-tailwindcss": "^0.1.10",
