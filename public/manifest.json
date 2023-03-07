@@ -4,7 +4,7 @@
   "theme_color": "#001140",
   "background_color": "#fff",
   "display": "standalone",
-  "description": "A Demo for Next-PWA",
+  "description": "Membaca Al-Quran dengan mudah dimanapun dan kapanpun.",
   "scope": "/",
   "start_url": "/",
   "icons": [
