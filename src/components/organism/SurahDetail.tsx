@@ -5,65 +5,125 @@ import { twclsx } from '@/libs'
 
 import UnstyledLink from '../atoms/UnstyledLink'
 
-import { Ayat as AyatType, SuratDetail, TafsirList } from 'quran-app'
-import { memo, useState } from 'react'
+import { Ayat as AyatType, SuratDetail, Tafsir, TafsirDetail } from 'quran-app'
+import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import { BsArrowLeft as ArrowLeft, BsArrowRight as ArrowRight } from 'react-icons/bs'
 
+const AYAT_PER_CHUNK = 30
+
 interface SurahDetailProps {
-  data: {
-    surah: SuratDetail
-    tafsir: TafsirList
-  }
+  surah: SuratDetail
 }
 
-const SurahDetail: React.FunctionComponent<SurahDetailProps> = ({ data: { surah, tafsir } }) => {
-  const [data] = useState({ surah, tafsir })
+const SurahDetail: React.FunctionComponent<SurahDetailProps> = ({ surah }) => {
+  const totalAyat = surah.data.ayat.length
+  const [visibleCount, setVisibleCount] = useState(Math.min(AYAT_PER_CHUNK, totalAyat))
+  const [tafsir, setTafsir] = useState<TafsirDetail[] | null>(null)
+
+  const tafsirRequested = useRef(false)
+  const pendingAyat = useRef<number | null>(null)
+  const sentinelRef = useRef<HTMLDivElement | null>(null)
+
+  const loadTafsir = useCallback(() => {
+    if (tafsirRequested.current) return
+    tafsirRequested.current = true
+
+    fetch(`https://equran.id/api/v2/tafsir/${surah.data.nomor}`)
+      .then((res) => res.json())
+      .then((res: Tafsir) => setTafsir(res.data.tafsir))
+      .catch(() => {
+        tafsirRequested.current = false
+      })
+  }, [surah.data.nomor])
+
+  // Tautan hasil share memakai anchor #nomorAyat, ayat tujuan harus ikut dirender agar bisa dituju.
+  // Tanpa anchor, scroll dikembalikan ke atas karena UnstyledLink memakai scroll={false}
+  useEffect(() => {
+    const nomorAyat = Number(window.location.hash.slice(1))
+    if (nomorAyat > 0) {
+      pendingAyat.current = nomorAyat
+      setVisibleCount((count) => Math.max(count, Math.min(nomorAyat + AYAT_PER_CHUNK, totalAyat)))
+    } else {
+      window.scrollTo(0, 0)
+    }
+  }, [totalAyat])
+
+  useEffect(() => {
+    if (pendingAyat.current === null) return
+    const el = document.getElementById(pendingAyat.current.toString())
+    if (el) {
+      pendingAyat.current = null
+      el.scrollIntoView()
+    }
+  }, [visibleCount])
+
+  useEffect(() => {
+    if (visibleCount >= totalAyat) return
+
+    const maybeGrow = () => {
+      const sentinel = sentinelRef.current
+      if (!sentinel) return
+
+      const viewportHeight = window.innerHeight || document.documentElement.clientHeight
+      if (sentinel.getBoundingClientRect().top - viewportHeight < 600) {
+        setVisibleCount((count) => Math.min(count + AYAT_PER_CHUNK, totalAyat))
+      }
+    }
+
+    maybeGrow()
+    window.addEventListener('scroll', maybeGrow, { passive: true })
+    window.addEventListener('resize', maybeGrow)
+
+    return () => {
+      window.removeEventListener('scroll', maybeGrow)
+      window.removeEventListener('resize', maybeGrow)
+    }
+  }, [visibleCount, totalAyat])
 
   return (
     <>
       <SurahInfo
-        nama_latin={data.surah.data.namaLatin}
-        arti={data.surah.data.arti}
-        jumlah_ayat={data.surah.data.jumlahAyat}
-        tempat_turun={data.surah.data.tempatTurun}
-        deskripsi={data.surah.data.deskripsi}
+        nama_latin={surah.data.namaLatin}
+        arti={surah.data.arti}
+        jumlah_ayat={surah.data.jumlahAyat}
+        tempat_turun={surah.data.tempatTurun}
+        deskripsi={surah.data.deskripsi}
       />
-      <audio
-        src={data.surah.data.audioFull['01']}
-        controls
-        className={twclsx('mt-7', 'w-full')}
-      ></audio>
+      <audio src={surah.data.audioFull['01']} controls className={twclsx('mt-7', 'w-full')}></audio>
 
       <section className={twclsx('divide-y-[1px] divide-slate-200/80 dark:divide-slate-700/80')}>
-        {data.surah.data.ayat.map((a: AyatType, i: number) => (
+        {surah.data.ayat.slice(0, visibleCount).map((a: AyatType, i: number) => (
           <Ayat
             ayat={a}
-            nomor={data.surah.data.nomor}
-            surah={data.surah.data.namaLatin}
+            nomor={surah.data.nomor}
+            surah={surah.data.namaLatin}
             key={a.nomorAyat}
-            tafsir={data.tafsir.tafsir[i]}
+            tafsir={tafsir?.[i]}
+            loadTafsir={loadTafsir}
           />
         ))}
       </section>
 
+      {visibleCount < totalAyat && <div ref={sentinelRef} aria-hidden='true' />}
+
       <section className={twclsx('flex items-center justify-between', 'my-3')}>
-        {data.surah.data.suratSebelumnya && (
+        {surah.data.suratSebelumnya && (
           <UnstyledLink
             title='Surat Sebelumnya'
-            href={`/surah/${data.surah.data.suratSebelumnya.nomor}`}
+            href={`/surah/${surah.data.suratSebelumnya.nomor}`}
             className={twclsx('next-before-button')}
           >
             <ArrowLeft className={twclsx('mr-2')} />
-            <span>{data.surah.data.suratSebelumnya.namaLatin}</span>
+            <span>{surah.data.suratSebelumnya.namaLatin}</span>
           </UnstyledLink>
         )}
-        {data.surah.data.suratSelanjutnya && (
+        {surah.data.suratSelanjutnya && (
           <UnstyledLink
             title='Surat Selanjutnya'
-            href={`/surah/${data.surah.data.suratSelanjutnya.nomor}`}
+            href={`/surah/${surah.data.suratSelanjutnya.nomor}`}
             className={twclsx('next-before-button', 'ml-auto')}
           >
-            <span>{data.surah.data.suratSelanjutnya.namaLatin}</span>
+            <span>{surah.data.suratSelanjutnya.namaLatin}</span>
             <ArrowRight className={twclsx('ml-2')} />
           </UnstyledLink>
         )}
