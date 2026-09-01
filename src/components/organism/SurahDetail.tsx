@@ -1,10 +1,14 @@
 import Ayat from '@/components/mollecules/Ayat'
+import ReadingSettings from '@/components/mollecules/ReadingSettings'
 import SurahInfo from '@/components/mollecules/SurahInfo'
 
 import { twclsx } from '@/libs'
+import { audioAyatUrl, audioFullUrl } from '@/libs/audio'
+import * as atom from '@/stores'
 
 import UnstyledLink from '../atoms/UnstyledLink'
 
+import { useAtom } from 'jotai'
 import { Ayat as AyatType, SuratDetail, Tafsir, TafsirDetail } from 'quran-app'
 import { memo, useCallback, useEffect, useRef, useState } from 'react'
 import { BsArrowLeft as ArrowLeft, BsArrowRight as ArrowRight } from 'react-icons/bs'
@@ -19,10 +23,41 @@ const SurahDetail: React.FunctionComponent<SurahDetailProps> = ({ surah }) => {
   const totalAyat = surah.data.ayat.length
   const [visibleCount, setVisibleCount] = useState(Math.min(AYAT_PER_CHUNK, totalAyat))
   const [tafsir, setTafsir] = useState<TafsirDetail[] | null>(null)
+  const [qari] = useAtom(atom.qari)
+  const [playingAyat, setPlayingAyat] = useState<number | null>(null)
 
   const tafsirRequested = useRef(false)
   const pendingAyat = useRef<number | null>(null)
   const sentinelRef = useRef<HTMLDivElement | null>(null)
+  const ayatAudioRef = useRef<HTMLAudioElement | null>(null)
+
+  // Preferensi qari dari localStorage baru dipakai setelah mounted agar SSR konsisten
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
+
+  const toggleAyatAudio = useCallback(
+    (nomorAyat: number) => {
+      ayatAudioRef.current?.pause()
+
+      if (playingAyat === nomorAyat) {
+        setPlayingAyat(null)
+        return
+      }
+
+      const audio = new Audio(audioAyatUrl(qari, surah.data.nomor, nomorAyat))
+      ayatAudioRef.current = audio
+      audio.addEventListener('ended', () => setPlayingAyat(null))
+      audio.addEventListener('error', () => setPlayingAyat(null))
+      audio.play().catch(() => setPlayingAyat(null))
+      setPlayingAyat(nomorAyat)
+    },
+    [playingAyat, qari, surah.data.nomor]
+  )
+
+  // Hentikan audio ayat saat meninggalkan halaman surah
+  useEffect(() => {
+    return () => ayatAudioRef.current?.pause()
+  }, [])
 
   const loadTafsir = useCallback(() => {
     if (tafsirRequested.current) return
@@ -89,13 +124,16 @@ const SurahDetail: React.FunctionComponent<SurahDetailProps> = ({ surah }) => {
         tempat_turun={surah.data.tempatTurun}
         deskripsi={surah.data.deskripsi}
       />
-      <audio
-        src={surah.data.audioFull['01']}
-        controls
-        preload='none'
-        aria-label={`Murottal Surah ${surah.data.namaLatin}`}
-        className={twclsx('mt-7', 'w-full')}
-      ></audio>
+      <div className={twclsx('flex items-center', 'space-x-2', 'mt-7')}>
+        <audio
+          src={mounted ? audioFullUrl(qari, surah.data.nomor) : surah.data.audioFull['01']}
+          controls
+          preload='none'
+          aria-label={`Murottal Surah ${surah.data.namaLatin}`}
+          className={twclsx('w-full')}
+        ></audio>
+        <ReadingSettings />
+      </div>
 
       <section className={twclsx('divide-y-[1px] divide-slate-200/80 dark:divide-slate-700/80')}>
         {surah.data.ayat.slice(0, visibleCount).map((a: AyatType, i: number) => (
@@ -106,6 +144,8 @@ const SurahDetail: React.FunctionComponent<SurahDetailProps> = ({ surah }) => {
             key={a.nomorAyat}
             tafsir={tafsir?.[i]}
             loadTafsir={loadTafsir}
+            isPlaying={playingAyat === a.nomorAyat}
+            onTogglePlay={toggleAyatAudio}
           />
         ))}
       </section>

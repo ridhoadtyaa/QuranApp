@@ -8,8 +8,19 @@ import Modal from './Modal'
 import { useAtom } from 'jotai'
 import { Ayat, TafsirDetail } from 'quran-app'
 import { memo, useEffect, useState } from 'react'
-import { AiOutlineRead as Read, AiOutlineShareAlt as Share } from 'react-icons/ai'
+import {
+  AiOutlinePauseCircle as Pause,
+  AiOutlinePlayCircle as Play,
+  AiOutlineRead as Read,
+  AiOutlineShareAlt as Share
+} from 'react-icons/ai'
 import { BsBookmark as Bookmark, BsBookmarkFill as BookmarkFill } from 'react-icons/bs'
+
+const ARABIC_FONT_SIZE = {
+  kecil: 'text-2xl leading-[2.2]',
+  sedang: 'text-3xl leading-[2.4]',
+  besar: 'text-4xl leading-[2.6]'
+}
 
 interface AyatProps {
   ayat: Ayat
@@ -17,11 +28,24 @@ interface AyatProps {
   tafsir?: TafsirDetail
   loadTafsir: () => void
   nomor: number
+  isPlaying: boolean
+  onTogglePlay: (nomorAyat: number) => void
 }
 
-const Ayat: React.FunctionComponent<AyatProps> = ({ ayat, surah, tafsir, loadTafsir, nomor }) => {
+const Ayat: React.FunctionComponent<AyatProps> = ({
+  ayat,
+  surah,
+  tafsir,
+  loadTafsir,
+  nomor,
+  isPlaying,
+  onTogglePlay
+}) => {
   const [modalTafsir, setModalTafsir] = useState(false)
   const [lastRead, setLastRead] = useAtom(atom.lastRead)
+  const [fontSize] = useAtom(atom.arabicFontSize)
+  const [showLatin] = useAtom(atom.showLatin)
+  const [showTerjemahan] = useAtom(atom.showTerjemahan)
 
   // Status bookmark dibaca dari localStorage, jadi baru ditampilkan setelah mounted
   // agar tidak mismatch dengan HTML hasil SSG
@@ -76,6 +100,22 @@ const Ayat: React.FunctionComponent<AyatProps> = ({ ayat, surah, tafsir, loadTaf
             {ayat.nomorAyat}
           </div>
           <div className={twclsx('flex items-center', 'space-x-4')}>
+            <Button onClick={() => onTogglePlay(ayat.nomorAyat)}>
+              {isPlaying ? (
+                <Pause
+                  size={23}
+                  className={twclsx('fill-primary-700 dark:fill-primary-400')}
+                  title='Jeda murottal ayat'
+                />
+              ) : (
+                <Play
+                  size={23}
+                  className={twclsx('fill-primary-700 dark:fill-primary-400')}
+                  title='Putar murottal ayat'
+                />
+              )}
+              <span className={twclsx('sr-only')}>Tombol Putar Murottal Ayat</span>
+            </Button>
             <Button onClick={toggleLastRead}>
               {isLastRead ? (
                 <BookmarkFill
@@ -114,17 +154,26 @@ const Ayat: React.FunctionComponent<AyatProps> = ({ ayat, surah, tafsir, loadTaf
           <div
             lang='ar'
             dir='rtl'
-            className={twclsx('text-right text-3xl leading-[2.4]', 'font-arabic', 'mt-6')}
+            className={twclsx(
+              'text-right',
+              ARABIC_FONT_SIZE[mounted ? fontSize : 'sedang'],
+              'font-arabic',
+              'mt-6'
+            )}
           >
             {ayat.teksArab}
           </div>
-          <div
-            className={twclsx('mt-8 mb-4')}
-            dangerouslySetInnerHTML={{ __html: `<p>${ayat.teksLatin}</p>` }}
-          />
-          <p className={twclsx('text-sm', 'text-slate-600 dark:text-slate-400')}>
-            {ayat.teksIndonesia}
-          </p>
+          {(!mounted || showLatin) && (
+            <div
+              className={twclsx('mt-8 mb-4')}
+              dangerouslySetInnerHTML={{ __html: `<p>${ayat.teksLatin}</p>` }}
+            />
+          )}
+          {(!mounted || showTerjemahan) && (
+            <p className={twclsx('text-sm', 'text-slate-600 dark:text-slate-400', 'mt-4')}>
+              {ayat.teksIndonesia}
+            </p>
+          )}
         </div>
       </div>
 
