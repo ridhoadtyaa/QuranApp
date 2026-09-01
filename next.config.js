@@ -8,7 +8,9 @@ const defaultRuntimeCaching = require('next-pwa/cache')
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  compiler: { removeConsole: !isDev }
+  compiler: { removeConsole: !isDev },
+  // Inline critical CSS (critters) agar stylesheet tidak render-blocking di mobile
+  experimental: { optimizeCss: true }
 }
 
 const withPWA = require('next-pwa')({

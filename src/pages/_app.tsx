@@ -7,10 +7,13 @@ import Router from 'next/router'
 import NProgress from 'nprogress'
 import { useEffect } from 'react'
 
+// display 'optional': di koneksi lambat teks langsung dirender dengan fallback
+// yang metrik-nya disesuaikan next/font, tanpa repaint saat font tiba —
+// repaint swap itu yang membuat LCP molor di mobile
 const poppins = Poppins({
   weight: ['400', '500', '600', '700'],
   subsets: ['latin'],
-  display: 'swap'
+  display: 'optional'
 })
 
 const MyApp = ({ Component, pageProps }: AppProps) => {

@@ -18,6 +18,15 @@ class MyDocument extends Document {
     return (
       <Html lang='id'>
         <Head>
+          {/* LPMQ dideklarasikan via CSS sehingga baru ditemukan browser setelah stylesheet
+              terparse — preload agar teks Arab (kandidat LCP) tidak menunggu font */}
+          <link
+            rel='preload'
+            href='/fonts/lpmq.woff2'
+            as='font'
+            type='font/woff2'
+            crossOrigin='anonymous'
+          />
           <link rel='manifest' href='/manifest.json' />
           <link
             rel='icon'

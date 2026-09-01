@@ -10,8 +10,10 @@ const Surah: React.FunctionComponent<SuratListItem> = ({
   jumlahAyat,
   nama
 }) => {
+  // prefetch dimatikan: 114 kartu membuat Next mem-prefetch JS + JSON tiap surah yang
+  // masuk viewport — boros bandwidth mobile dan terhitung "unused JavaScript" di Lighthouse
   return (
-    <Link href={`/surah/${nomor}`} key={nomor}>
+    <Link href={`/surah/${nomor}`} prefetch={false} key={nomor}>
       <div
         className={twclsx('flex justify-between items-center', 'py-4', 'cursor-pointer')}
         key={nomor}

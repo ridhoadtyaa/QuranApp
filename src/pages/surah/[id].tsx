@@ -4,7 +4,6 @@ import Layout from '@/components/templates/Layout'
 
 import { getMetaData, twclsx } from '@/libs'
 
-import axios from 'axios'
 import { BreadcrumbJsonLd } from 'next-seo'
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import { ParsedUrlQuery } from 'querystring'
@@ -60,9 +59,8 @@ const SurahPage: NextPage<SurahPageProps> = ({ surah }) => {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const {
-    data: { data }
-  } = await axios.get<Surat>('https://equran.id/api/v2/surat')
+  const req = await fetch('https://equran.id/api/v2/surat')
+  const { data }: Surat = await req.json()
   const paths = data.map((surah: SuratData) => {
     return {
       params: { id: surah.nomor.toString() }
@@ -76,7 +74,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { id } = params as IParams
-  const { data } = await axios.get<SuratDetail>(`https://equran.id/api/v2/surat/${id}`)
+  const req = await fetch(`https://equran.id/api/v2/surat/${id}`)
+  const data: SuratDetail = await req.json()
 
   // Pangkas field yang tidak dipakai UI: audio per-ayat (6 qari, ±500 char/ayat)
   // dan audioFull selain qari '01' — memotong payload Al-Baqarah ±140 KB
