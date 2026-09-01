@@ -1,18 +1,15 @@
 import { NextSeo, NextSeoProps } from 'next-seo'
 
-export type CustomSeoProps = {
-  template?: string
-} & NextSeoProps
+export type CustomSeoProps = NextSeoProps
 
 const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME
 
 /**
- * It takes a NextSeoProps object and returns a `NextSeo components`
- * @returns A Next.js component.
+ * Membungkus NextSeo dengan pola judul "Nama Halaman — Quran App":
+ * bagian unik halaman di depan agar tidak terpotong di hasil pencarian
  */
 const Seo: React.FunctionComponent<CustomSeoProps> = ({ ...props }) => {
-  const TITLE_TEMPLATE = `%s — ${props.template ?? SITE_NAME}`
-  return <NextSeo {...props} title={props.title} titleTemplate={TITLE_TEMPLATE} />
+  return <NextSeo {...props} title={props.title} titleTemplate={`%s — ${SITE_NAME}`} />
 }
 
 export default Seo

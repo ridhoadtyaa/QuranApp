@@ -3,16 +3,21 @@ import { CustomSeoProps } from '@/components/atoms/Seo'
 interface MetaData extends CustomSeoProps {
   title: string
   description: string
-  keywords: Array<string>
   slug: string
   og_image: string
   og_image_alt: string
   type?: 'website' | 'blog'
 }
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL
+// Trailing slash dibuang agar SITE_URL + slug tidak menghasilkan double slash di canonical/og:url
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? '').replace(/\/+$/, '')
 const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME
-const TWITER_USERNAME = process.env.NEXT_PUBLIC_TWITTER_USERNAME
+const TWITTER_USERNAME = process.env.NEXT_PUBLIC_TWITTER_USERNAME
+const TWITTER_HANDLE = TWITTER_USERNAME
+  ? TWITTER_USERNAME.startsWith('@')
+    ? TWITTER_USERNAME
+    : `@${TWITTER_USERNAME}`
+  : undefined
 
 export const getMetaData = (data: MetaData): CustomSeoProps => ({
   canonical: SITE_URL + data.slug,
@@ -27,19 +32,13 @@ export const getMetaData = (data: MetaData): CustomSeoProps => ({
     ],
     site_name: SITE_NAME,
     url: SITE_URL + data.slug,
+    locale: 'id_ID',
     type: data.type ?? 'website'
   },
   twitter: {
     cardType: 'summary_large_image',
-    // TODO: Change to your Tiwetter username
-    site: TWITER_USERNAME,
-    handle: TWITER_USERNAME
+    site: TWITTER_HANDLE,
+    handle: TWITTER_HANDLE
   },
-  additionalMetaTags: [
-    {
-      name: 'keywords',
-      content: data.keywords.join(', ')
-    }
-  ],
   ...data
 })

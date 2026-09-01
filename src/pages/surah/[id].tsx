@@ -5,10 +5,13 @@ import Layout from '@/components/templates/Layout'
 import { getMetaData, twclsx } from '@/libs'
 
 import axios from 'axios'
+import { BreadcrumbJsonLd } from 'next-seo'
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import { ParsedUrlQuery } from 'querystring'
 import { Surat, SuratData, SuratDetail } from 'quran-app'
 import { IoIosArrowRoundBack as Back } from 'react-icons/io'
+
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? '').replace(/\/+$/, '')
 
 interface SurahPageProps {
   surah: SuratDetail
@@ -19,25 +22,26 @@ interface IParams extends ParsedUrlQuery {
 }
 
 const SurahPage: NextPage<SurahPageProps> = ({ surah }) => {
+  const { nomor, namaLatin, arti, jumlahAyat, tempatTurun } = surah.data
+  const tempat = tempatTurun.charAt(0).toUpperCase() + tempatTurun.slice(1)
+
   const meta = getMetaData({
-    title: `Quran App`,
-    template: surah.data.namaLatin,
-    description: `Membaca Al-Quran dengan mudah dimanapun dan kapanpun.`,
-    keywords: [
-      'Quran App',
-      'Al-Quran',
-      'Al-Quran Online',
-      'Baca Al-Quran',
-      `${surah.data.namaLatin}`
-    ],
+    title: `Surah ${namaLatin}`,
+    description: `Baca Surah ${namaLatin} (${arti}) — ${jumlahAyat} ayat, diturunkan di ${tempat}. Teks Arab, latin, terjemahan Indonesia, tafsir, dan audio murottal.`,
     og_image: `https://ik.imagekit.io/qmw3y9jqe/photo_2022-07-03_22-00-25_uVwQUQP0f.jpg?ik-sdk-version=javascript-1.4.3&updatedAt=1656860463001`,
     og_image_alt: 'Quran App',
-    slug: `/surah/${surah.data.nomor}`,
+    slug: `/surah/${nomor}`,
     type: 'website'
   })
 
   return (
     <Layout {...meta}>
+      <BreadcrumbJsonLd
+        itemListElements={[
+          { position: 1, name: 'Beranda', item: SITE_URL },
+          { position: 2, name: `Surah ${namaLatin}`, item: `${SITE_URL}/surah/${nomor}` }
+        ]}
+      />
       <UnstyledLink
         className={twclsx(
           'text-primary-800 dark:text-primary-400 font-medium',

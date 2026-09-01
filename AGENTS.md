@@ -20,7 +20,7 @@ Dokumen ini adalah peta lengkap project untuk AI agent / developer baru. Dibuat 
 | UI primitives | Headless UI (`Dialog`/`Transition` untuk modal) |
 | State global | Jotai (`search` untuk filter home; `lastRead` via `atomWithStorage` untuk penanda terakhir dibaca) |
 | Theme | `next-themes` (light/dark, disimpan di `localStorage` key `theme`) |
-| SEO | `next-seo` + `next-sitemap` (sitemap & robots.txt digenerate saat `postbuild`) |
+| SEO | `next-seo` + `next-sitemap` (sitemap & robots.txt digenerate saat `postbuild`). Pola judul "Nama Halaman — Quran App" via `Seo.tsx`; deskripsi unik per surah; JSON-LD `WebSite` (home) & `BreadcrumbJsonLd` (surah). `SITE_URL` selalu dinormalisasi tanpa trailing slash sebelum digabung slug — jangan gabung `NEXT_PUBLIC_SITE_URL` mentah (env-nya diakhiri `/`, hasilnya double slash) |
 | HTTP | `axios` dan `fetch` (dipakai campur di `getStaticProps`) |
 | Ikon | `react-icons` |
 | Progress bar | `nprogress` (di route change; base CSS di-inline di `globals.css`) |

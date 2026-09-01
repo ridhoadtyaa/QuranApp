@@ -8,8 +8,11 @@ import * as atom from '@/stores'
 
 import { useAtom } from 'jotai'
 import type { GetStaticProps, NextPage } from 'next'
+import Head from 'next/head'
 import { Surat, SuratListItem } from 'quran-app'
 import { useMemo } from 'react'
+
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? '').replace(/\/+$/, '')
 
 interface HomePageProps {
   surat: SuratListItem[]
@@ -24,10 +27,8 @@ const Home: NextPage<HomePageProps> = ({ surat }) => {
   )
 
   const meta = getMetaData({
-    title: 'Quran App',
-    template: 'Home',
-    description: `Membaca Al-Quran dengan mudah dimanapun dan kapanpun.`,
-    keywords: ['Quran App', 'Al-Quran', 'Al-Quran Online', 'Baca Al-Quran'],
+    title: 'Baca Al-Quran Online',
+    description: `Baca Al-Quran online lengkap 114 surah — teks Arab, latin, terjemahan Indonesia, tafsir, dan audio murottal. Gratis dan bisa diakses offline.`,
     og_image: `https://ik.imagekit.io/qmw3y9jqe/photo_2022-07-03_22-00-25_uVwQUQP0f.jpg?ik-sdk-version=javascript-1.4.3&updatedAt=1656860463001`,
     og_image_alt: 'Quran App',
     slug: '/',
@@ -36,6 +37,22 @@ const Home: NextPage<HomePageProps> = ({ surat }) => {
 
   return (
     <Layout {...meta}>
+      <Head>
+        <script
+          type='application/ld+json'
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'WebSite',
+              name: 'Quran App',
+              url: SITE_URL,
+              inLanguage: 'id',
+              description:
+                'Baca Al-Quran online lengkap 114 surah — teks Arab, latin, terjemahan Indonesia, tafsir, dan audio murottal.'
+            })
+          }}
+        />
+      </Head>
       <h1 className={twclsx('text-xl font-bold md:text-2xl', 'text-primary-900')}>Daftar Surah</h1>
 
       <SearchBar />
