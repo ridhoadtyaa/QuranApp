@@ -20,7 +20,12 @@ const Header: React.FunctionComponent = () => {
       <nav>
         <div className={twclsx('layout', 'py-5', 'flex justify-between items-center')}>
           <UnstyledLink href='/'>
-            <h2 className={twclsx('text-primary-700 dark:text-white')}>Quran App</h2>
+            {/* span, bukan heading: logo situs tampil di semua halaman dan bukan judul konten */}
+            <span
+              className={twclsx('text-2xl font-bold md:text-3xl', 'text-primary-700 dark:text-white')}
+            >
+              Quran App
+            </span>
           </UnstyledLink>
           <div>
             <ToggleDarkMode />

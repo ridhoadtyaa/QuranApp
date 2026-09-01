@@ -72,7 +72,22 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { id } = params as IParams
-  const { data: surah } = await axios.get<SuratDetail>(`https://equran.id/api/v2/surat/${id}`)
+  const { data } = await axios.get<SuratDetail>(`https://equran.id/api/v2/surat/${id}`)
+
+  // Pangkas field yang tidak dipakai UI: audio per-ayat (6 qari, ±500 char/ayat)
+  // dan audioFull selain qari '01' — memotong payload Al-Baqarah ±140 KB
+  const surah: SuratDetail = {
+    data: {
+      ...data.data,
+      audioFull: { '01': data.data.audioFull['01'] },
+      ayat: data.data.ayat.map(({ nomorAyat, teksArab, teksLatin, teksIndonesia }) => ({
+        nomorAyat,
+        teksArab,
+        teksLatin,
+        teksIndonesia
+      }))
+    }
+  }
 
   return {
     props: {

@@ -37,14 +37,16 @@ const SurahInfo: React.FunctionComponent<SurahInfoProps> = ({
           'relative'
         )}
       >
-        <h3 className={twclsx('mb-1', 'font-semibold')}>{nama_latin}</h3>
+        <h1 className={twclsx('text-xl md:text-2xl', 'mb-1', 'font-semibold')}>{nama_latin}</h1>
         <p className={twclsx('mb-2')}>{arti}</p>
         <div className={twclsx('bg-white/70', 'h-[.5px]', 'w-5/12', 'mx-auto')}></div>
         <span className={twclsx('uppercase', 'block', 'mt-3 mb-5')}>
           {tempat_turun} &bull; {jumlah_ayat} AYAT
         </span>
 
-        <h2 className={twclsx('font-arabic')}>ِبِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيْم</h2>
+        <p lang='ar' dir='rtl' className={twclsx('font-arabic', 'text-2xl font-bold md:text-3xl')}>
+          ِبِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيْم
+        </p>
 
         <Button
           className={twclsx('absolute top-3 right-3')}

@@ -1,3 +1,4 @@
+import LastReadCard from '@/components/mollecules/LastReadCard'
 import SearchBar from '@/components/mollecules/SearchBar'
 import Surah from '@/components/mollecules/Surah'
 import Layout from '@/components/templates/Layout'
@@ -7,14 +8,20 @@ import * as atom from '@/stores'
 
 import { useAtom } from 'jotai'
 import type { GetStaticProps, NextPage } from 'next'
-import { SuratData } from 'quran-app'
+import { Surat, SuratListItem } from 'quran-app'
+import { useMemo } from 'react'
 
 interface HomePageProps {
-  surat: SuratData[]
+  surat: SuratListItem[]
 }
 
 const Home: NextPage<HomePageProps> = ({ surat }) => {
   const [search] = useAtom(atom.search)
+
+  const filteredSurat = useMemo(
+    () => surat.filter((s) => s.namaLatin.toLocaleLowerCase().includes(search.toLowerCase())),
+    [surat, search]
+  )
 
   const meta = getMetaData({
     title: 'Quran App',
@@ -29,18 +36,17 @@ const Home: NextPage<HomePageProps> = ({ surat }) => {
 
   return (
     <Layout {...meta}>
-      <h3 className={twclsx('text-primary-900')}>Daftar Surah</h3>
+      <h1 className={twclsx('text-xl font-bold md:text-2xl', 'text-primary-900')}>Daftar Surah</h1>
 
       <SearchBar />
+
+      <LastReadCard />
 
       <section
         className={twclsx('divide-y-[1px] divide-slate-200/80 dark:divide-slate-700/80', 'mb-6')}
       >
-        {surat.filter((s) => s.namaLatin.toLocaleLowerCase().includes(search.toLowerCase()))
-          .length ? (
-          surat
-            .filter((s) => s.namaLatin.toLocaleLowerCase().includes(search.toLowerCase()))
-            .map((s) => <Surah key={s.nomor} {...s} />)
+        {filteredSurat.length ? (
+          filteredSurat.map((s) => <Surah key={s.nomor} {...s} />)
         ) : (
           <p className={twclsx('text-center', 'pt-3')}>Surah yang anda cari tidak ditemukan.</p>
         )}
@@ -51,11 +57,18 @@ const Home: NextPage<HomePageProps> = ({ surat }) => {
 
 export const getStaticProps: GetStaticProps<HomePageProps> = async () => {
   const req = await fetch('https://equran.id/api/v2/surat')
-  const surat = await req.json()
+  const surat: Surat = await req.json()
 
   return {
     props: {
-      surat: surat.data
+      // Hanya field yang dipakai kartu Surah — deskripsi & audioFull dibuang (±120 KB → ±15 KB)
+      surat: surat.data.map(({ nomor, nama, namaLatin, jumlahAyat, tempatTurun }) => ({
+        nomor,
+        nama,
+        namaLatin,
+        jumlahAyat,
+        tempatTurun
+      }))
     }
   }
 }

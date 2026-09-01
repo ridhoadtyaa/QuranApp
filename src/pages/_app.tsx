@@ -1,10 +1,17 @@
 import '@/styles/globals.css'
 
+import { Poppins } from '@next/font/google'
 import { ThemeProvider } from 'next-themes'
 import type { AppProps } from 'next/app'
 import Router from 'next/router'
 import NProgress from 'nprogress'
 import { useEffect } from 'react'
+
+const poppins = Poppins({
+  weight: ['400', '500', '600', '700'],
+  subsets: ['latin'],
+  display: 'swap'
+})
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   useEffect(() => {
@@ -21,6 +28,13 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 
   return (
     <ThemeProvider attribute='class' storageKey='theme' enableSystem>
+      {/* Var di :root agar font juga berlaku untuk modal Headless UI yang dirender lewat portal */}
+      {/* eslint-disable-next-line react/no-unknown-property */}
+      <style jsx global>{`
+        :root {
+          --font-poppins: ${poppins.style.fontFamily};
+        }
+      `}</style>
       <Component {...pageProps} />
     </ThemeProvider>
   )

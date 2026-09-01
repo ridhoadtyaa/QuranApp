@@ -21,6 +21,20 @@ declare module 'quran-app' {
     Mekah = 'mekah'
   }
 
+  // Versi ramping SuratData untuk halaman home: hanya field yang dipakai kartu Surah,
+  // agar payload getStaticProps tidak membawa deskripsi & audioFull yang tidak terpakai
+  export type SuratListItem = Pick<
+    SuratData,
+    'nomor' | 'nama' | 'namaLatin' | 'jumlahAyat' | 'tempatTurun'
+  >
+
+  // Penanda posisi terakhir dibaca, disimpan di localStorage (per perangkat)
+  export interface LastRead {
+    surah: number
+    namaLatin: string
+    ayat: number
+  }
+
   export interface SuratDetail {
     data: {
       nomor: number
@@ -42,7 +56,8 @@ declare module 'quran-app' {
     teksArab: string
     teksLatin: string
     teksIndonesia: string
-    audio: { [key: string]: string }
+    // opsional: getStaticProps halaman detail sengaja membuang audio per-ayat (tidak dipakai UI)
+    audio?: { [key: string]: string }
   }
 
   export interface Tafsir {

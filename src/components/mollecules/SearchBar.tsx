@@ -25,6 +25,7 @@ const SearchBar: React.FunctionComponent = () => {
           'placeholder:text-sm'
         )}
         placeholder='Cari Surah'
+        aria-label='Cari surah'
         value={search}
         onChange={changeSearch}
       />

@@ -89,7 +89,13 @@ const SurahDetail: React.FunctionComponent<SurahDetailProps> = ({ surah }) => {
         tempat_turun={surah.data.tempatTurun}
         deskripsi={surah.data.deskripsi}
       />
-      <audio src={surah.data.audioFull['01']} controls className={twclsx('mt-7', 'w-full')}></audio>
+      <audio
+        src={surah.data.audioFull['01']}
+        controls
+        preload='none'
+        aria-label={`Murottal Surah ${surah.data.namaLatin}`}
+        className={twclsx('mt-7', 'w-full')}
+      ></audio>
 
       <section className={twclsx('divide-y-[1px] divide-slate-200/80 dark:divide-slate-700/80')}>
         {surah.data.ayat.slice(0, visibleCount).map((a: AyatType, i: number) => (

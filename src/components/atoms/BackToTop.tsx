@@ -7,7 +7,10 @@ import { AiOutlineArrowUp } from 'react-icons/ai'
 
 const BackToTop: React.FunctionComponent = () => {
   const yAxis = useWindowScroll()
-  const handleClick = () => window.scrollTo({ top: 0, behavior: 'smooth' })
+  const handleClick = () => {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' })
+  }
 
   return yAxis > 200 ? (
     <Button
